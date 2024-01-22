@@ -18,8 +18,21 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @GetMapping("/")
+    public String home(HttpSession session)
+    {
+        if(session.getAttribute("loggedUser")==null){
+            return "redirect:/login";
+        }
+        return "redirect:/books";
+    }
+
     @GetMapping("/signup")
-    public String signup(User user){
+    public String signup(User user, HttpSession session){
+        if(session.getAttribute("loggedUser")!=null) {
+            User loggedUser = (User) session.getAttribute("loggedUser");
+            return "redirect:/user/" + loggedUser.getId();
+        }
         return "signup";
     }
 
@@ -37,7 +50,11 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(Credentials credentials){
+    public String login(Credentials credentials, HttpSession session){
+        if(session.getAttribute("loggedUser")!=null) {
+            User loggedUser = (User) session.getAttribute("loggedUser");
+            return "redirect:/user/" + loggedUser.getId();
+        }
         return "login";
     }
 
@@ -50,7 +67,7 @@ public class UserController {
         return "redirect:/user/"+user.getId();
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.setAttribute("loggedUser", null);
 
@@ -58,7 +75,12 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ModelAndView user(@PathVariable("id") int id){
+    public ModelAndView user(@PathVariable("id") int id, HttpSession session){
+        if(session.getAttribute("loggedUser")==null){
+            ModelAndView modelAndView =  new ModelAndView("redirect:/login");
+            return modelAndView;
+        }
+
         User user = userRepository.findById(id);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -70,6 +92,15 @@ public class UserController {
         }
 
         return null;
+    }
+
+    @GetMapping("/currentuser")
+    public String currentUser(HttpSession session){
+        if(session.getAttribute("loggedUser")!=null) {
+            User loggedUser = (User) session.getAttribute("loggedUser");
+            return "redirect:/user/" + loggedUser.getId();
+        }
+        return "redirect:/login";
     }
 
 }

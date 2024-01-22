@@ -3,6 +3,7 @@ package com.example.libreria.controller;
 import com.example.libreria.model.Book;
 import com.example.libreria.model.User;
 import com.example.libreria.repository.BookRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,17 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
-    @GetMapping("/addBook")
-    public String addBook(Book book){
+    @GetMapping("/addbook")
+    public String addBook(Book book, HttpSession session){
+
+        if(session.getAttribute("loggedUser")==null){
+            return "redirect:/login";
+        }
+
         return "addBook";
     }
 
-    @PostMapping("/addBook")
+    @PostMapping("/addbook")
     public String checkAddBook(@Valid Book book, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return "addBook";
@@ -36,7 +42,12 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public ModelAndView book(@PathVariable("id") int id){
+    public ModelAndView book(@PathVariable("id") int id, HttpSession session){
+        if(session.getAttribute("loggedUser")==null){
+            ModelAndView modelAndView =  new ModelAndView("redirect:/login");
+            return modelAndView;
+        }
+
         Book book = bookRepository.findById(id);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -51,7 +62,11 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public ModelAndView books(){
+    public ModelAndView books(HttpSession session){
+        if(session.getAttribute("loggedUser")==null){
+            ModelAndView modelAndView =  new ModelAndView("redirect:/login");
+            return modelAndView;
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("books");
         modelAndView.addObject("books", bookRepository.findAll());

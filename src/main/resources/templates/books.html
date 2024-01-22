@@ -5,22 +5,23 @@
   <title>Books</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <h1>List of books</h1>
 <table>
   <tr>
-    <th>id</th>
     <th>Title</th>
     <th>Author</th>
     <th>Year of pubblication</th>
     <th>Price</th>
+    <th>Link</th>
   </tr>
   <th:block th:each="book : ${books}">
     <tr>
-      <td th:text="${book.id}"></td>
       <td th:text="${book.title}"></td>
-      <td th:text="${book.author}"></td>
-      <td th:text="${book.yearPubblication}"></td>
-      <td th:text="${book.price}">€</td>
+      <td th:text="${book.author} != '' ? ${book.author} : 'UNKNOWN'"></td>
+      <td th:text="${book.yearPubblication} != 0 ? ${book.yearPubblication} : 'UNKNOWN'"></td>
+      <td th:text="${book.price} > 0 ? ${book.price}+'€' : 'NOT ON SALE'"></td>
+      <td><a th:href="@{/book/{id}(id=${book.id})}">Dettaglio</a></td>
     </tr>
   </th:block>
 </table>

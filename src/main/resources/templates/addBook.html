@@ -5,7 +5,8 @@
   <title>Add Book</title>
 </head>
 <body>
-<form action="#" th:action="@{/addBook}" th:object="${book}" method="post">
+<div th:replace="fragments/header :: header"></div>
+<form action="#" th:action="@{/addbook}" th:object="${book}" method="post">
   <h1>Add Book</h1>
   <label for="textTitle">Title</label>
   <input type="text" id="textTitle" th:field="*{title}" />
