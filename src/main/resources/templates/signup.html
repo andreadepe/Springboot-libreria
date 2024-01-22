@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+<form action="#" th:action="@{/signup}" th:object="${user}" method="post">
+    <h1>Sign Up</h1>
+    <label for="textName">Name</label>
+    <input type="text" id="textName" th:field="*{name}" />
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+    <br>
+    <label for="textSurname">Surname</label>
+    <input type="text" id="textSurname" th:field="*{surname}" />
+    <p th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></p>
+    <br>
+    <label for="textUsername">Username</label>
+    <input type="text" id="textUsername" th:field="*{credentials.username}" />
+    <p th:if="${#fields.hasErrors('credentials.username')}" th:errors="*{credentials.username}"></p>
+    <br>
+    <label for="textPassword">Password</label>
+    <input type="password" id="textPassword" th:field="*{credentials.password}" />
+    <p th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{credentials.password}">Password non valida</p>
+    <br><br>
+    <button type="submit">Submit</button>
+    <p>Have an account? <a href="/login">Sign in</a></p>
+</form>
+</body>
+</html>
