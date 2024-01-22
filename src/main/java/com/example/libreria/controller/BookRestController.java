@@ -33,6 +33,11 @@ public class BookRestController {
         return bookRepository.findByTitle(title);
     }
 
+    @PostMapping("/bookcontains")
+    public Iterable<Book> bookContains(@RequestParam("title") String title){
+        return bookRepository.findByTitleLike("%" + title + "%");
+    }
+
     @PostMapping("/sync")
     public String sync(@RequestParam("title")String title){
         RestTemplate restTemplate = new RestTemplate();

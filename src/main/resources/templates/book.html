@@ -14,15 +14,15 @@
   </tr>
   <tr>
     <td>Author:</td>
-    <td th:text="${book.author}"></td>
+    <td th:text="${book.author} != '' ? ${book.author} : 'UNKNOWN'"></td>
   </tr>
   <tr>
     <td>Year of pubblication:</td>
-    <td th:text="${book.yearPubblication}"></td>
+    <td th:text="${book.yearPubblication} != 0 ? ${book.yearPubblication} : 'UNKNOWN'"></td>
   </tr>
   <tr>
     <td>Price:</td>
-    <td th:text="${book.price}"></td>
+    <td th:text="${book.price} > 0 ? ${book.price}+'€' : 'NOT ON SALE'"></td>
   </tr>
 </table>
 </body>
